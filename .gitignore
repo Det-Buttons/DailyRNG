@@ -1,18 +1,29 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
-
-# Other files and folders
-.settings/
-
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+#!/bin/bash
+people=("Dalan" "Dylan" "Kolya" "Dustin" "Hal" "Luis" "Mateo" "Sung")
+buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Floater" "Drifter" "Roamer")
+absent_people=()
+while getopts ":s:" opt; do
+        case $opt in
+                s) absent_people+=("$OPTARG");;
+                \?) echo "Invalid option: -$OPTARG"; exit 1;;
+        esac
+done
+day=$(date +%u)
+if [ $day -eq 1 ] || [ $day -eq 2 ]; then
+        people=("${people[@]//Dalan}")
+fi
+if [ $day -eq 3 ] || [ $day -eq 4 ]; then
+        people=("${people[@]//Dylan}")
+fi
+if [ $day -eq 1 ] || [ $day -eq 4 ]; then
+        buildings=("${building[@]//Roamer}")
+fi
+for absent_people in "${absent_people[@]}"; do
+        people=("${people[@]/$absent_people}")
+done
+shuffled_people=($(shuf -e "${people[@]}"))
+buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Floater" "Drifter" "Roamer")
+for i in "${!buildings[@]}"; do
+        assigned_person=${shuffled_people[$i]}
+        echo "${assigned_person} to ${buildings[$i]}"
+done
