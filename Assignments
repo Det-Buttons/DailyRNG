@@ -1,29 +1,20 @@
 #!/bin/bash
 people=("Dalan" "Dylan" "Kolya" "Dustin" "Hal" "Luis" "Mateo" "Sung")
-buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Floater" "Drifter" "Roamer")
-absent_people=()
-while getopts ":s:" opt; do
-        case $opt in
-                s) absent_people+=("$OPTARG");;
-                \?) echo "Invalid option: -$OPTARG"; exit 1;;
-        esac
-done
+buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Assistant Floater")
+
 day=$(date +%u)
 if [ $day -eq 1 ] || [ $day -eq 2 ]; then
         people=("${people[@]//Dalan}")
 fi
-if [ $day -eq 3 ] || [ $day -eq 4 ]; then
+if [ $day -eq 4 ] || [ $day -eq 5 ]; then
         people=("${people[@]//Dylan}")
-fi
-if [ $day -eq 1 ] || [ $day -eq 4 ]; then
-        buildings=("${building[@]//Roamer}")
 fi
 for absent_people in "${absent_people[@]}"; do
         people=("${people[@]/$absent_people}")
 done
 shuffled_people=($(shuf -e "${people[@]}"))
-buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Floater" "Drifter" "Roamer")
+buildings=("Eag1" "Eag2" "Eag3" "Eag5" "Eag6" "Assistant Floater" "Assistant Floater" "Assistant Floater")
 for i in "${!buildings[@]}"; do
         assigned_person=${shuffled_people[$i]}
-        echo "${assigned_person} to ${buildings[$i]}"
+        echo "${assigned_person}, assigned ${buildings[$i]}"
 done
